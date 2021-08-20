@@ -1,0 +1,345 @@
+{% extends "base.html" %} {% block content %}
+    <title>Home Page</title>
+    <title>Geolocation</title>
+    <link href="/static/socialnetwork.css" rel="stylesheet" type="text/css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="/static/socialnetwork.js"></script>
+
+    <script>
+        // Note: This example requires that you consent to location sharing when
+        // prompted by your browser. If you see the error "The Geolocation service
+        // failed.", it means you probably did not give permission for the browser to
+        // locate you.
+        let map, infoWindow;
+
+        let latLng;
+
+        let placeId;
+
+        let locationName;
+
+        let markers = [];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: {
+                    lat: 40.448949941906406,
+                    lng: -79.94918416400179,
+                },
+                zoom: 12,
+            });
+            new ClickEventHandler(map, origin);
+            setMarkers(map);
+
+
+            const input = document.getElementById("pac-input");
+            const autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo("bounds", map);
+            // Specify just the place data fields that you need.
+            autocomplete.setFields(["place_id", "geometry", "name"]);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+            infoWindow = new google.maps.InfoWindow();
+            const infowindowContent = document.getElementById("infowindow-content");
+            infoWindow.setContent(infowindowContent);
+            const marker = new google.maps.Marker({
+                map: map
+            });
+            marker.addListener("click", () => {
+                infoWindow.open(map, marker);
+            });
+            autocomplete.addListener("place_changed", () => {
+                infoWindow.close();
+                const place = autocomplete.getPlace();
+
+                if (!place.geometry || !place.geometry.location) {
+                    return;
+                }
+
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+                // Set the position of the marker using the place ID and location.
+                marker.setPlace({
+                    placeId: place.place_id,
+                    location: place.geometry.location,
+                });
+                marker.setVisible(true);
+                infowindowContent.style.visibility = "visible";
+                infowindowContent.children["place-icon"].src = place.icon;
+                infowindowContent.children.namedItem("place-name").textContent = place.name;
+                infowindowContent.children.namedItem("place-address").textContent =
+                    place.geometry.location;
+                infoWindow.open(map, marker);
+                placeId = place.place_id;
+                latLng = place.geometry.location;
+                locationName = place.name;
+            });
+        }
+
+        // Adds markers to the map.
+        const visited = JSON.parse("{{self_geoinfo|escapejs}}");
+        const other_visited = JSON.parse("{{other_geoinfo|escapejs}}");
+        const image1 = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+        const image2 = "/static/blueflag.png"
+
+        function clearMap() {
+            for (i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+
+        function setMarkers(map, showAll = true) {
+            // clear markers and delete all markers
+            clearMap();
+            for (let i = 0; i < visited.length; i++) {
+                const visitedElement = visited[i];
+                imgAddr = "get_picture/" + visitedElement[4];
+                let coverimg = "<img height=100px width=100px src= '" + imgAddr + "' alt='no pic'>";
+                console.log(coverimg)
+                const markerwindow = new google.maps.InfoWindow({
+                    content: coverimg +
+                        '<form method="POST" onsubmit="return my_marker_latLng(' + i + ')" action="' +
+                        "{% url 'log_display' %}" + '">' +
+                        '{% csrf_token %}' +
+                        '<input type="hidden" name="latLng" id="my_display_latLng_' + i + '">' +
+                        '<button class="button-style1" type="submit">Display log</button>' +
+                        '</form>' +
+                        '<form method="POST" onsubmit="return my_marker_latLng(' + i + ')" action="' +
+                        "{% url 'log_editor' %}" + '">' +
+                        '{% csrf_token %}' +
+                        '<input type="hidden" name="latLng" id="my_add_latLng_' + i + '">' +
+                        '<button class="button-style1" type="submit">Add log</button>' +
+                        '</form>'
+                });
+                let marker = new google.maps.Marker({
+                    position: {
+                        lat: parseFloat(visitedElement[0]),
+                        lng: parseFloat(visitedElement[1])
+                    },
+                    map,
+                    icon: {
+                        url: imgAddr,
+                        scaledSize: new google.maps.Size(96, 96),
+                    },
+                    title: visitedElement[2]
+                });
+                markers.push(marker);
+                marker.setMap(map);
+                marker.addListener("click", () => {
+                    markerwindow.open(map, marker);
+                })
+
+                // I create an OverlayView, and set it to add the "markerLayer" class to the markerLayer DIV
+                var myoverlay = new google.maps.OverlayView();
+                myoverlay.draw = function () {
+                    this.getPanes().markerLayer.id = 'markerLayer';
+                };
+                myoverlay.setMap(map);
+            }
+            if (showAll) {
+                for (let i = 0; i < other_visited.length; i++) {
+                    const visitedElement = other_visited[i];
+                    
+                    imgAddr = "get_picture/" + visitedElement[4];
+                    let coverimg = "<img height=100px width=100px src= '" + imgAddr + "' alt='no pic'>";
+                    console.log(coverimg)
+                    const markerwindow = new google.maps.InfoWindow({
+                        content: coverimg +
+                            '<form method="POST" onsubmit="return other_marker_latLng(' + i + ')" action="' +
+                            "{% url 'log_display' %}" + '">' +
+                            '{% csrf_token %}' +
+                            '<input type="hidden" name="latLng" id="other_display_latLng_' + i + '">' +
+                            '<button class="button-style1" type="submit">Display log</button>' +
+                            '</form>' +
+                            '<form method="POST" onsubmit="return other_marker_latLng(' + i + ')" action="' +
+                            "{% url 'log_editor' %}" + '">' +
+                            '{% csrf_token %}' +
+                            '<input type="hidden" name="latLng" id="other_add_latLng_' + i + '">' +
+                            '<button class="button-style1" type="submit">Add log</button>' +
+                            '</form>'
+                    });
+                    let marker = new google.maps.Marker({
+                        position: {
+                            lat: parseFloat(visitedElement[0]),
+                            lng: parseFloat(visitedElement[1])
+                        },
+                        map,
+                        icon: {
+                            url: imgAddr,
+                            scaledSize: new google.maps.Size(96, 96),
+                        },
+                        title: visitedElement[2]
+                    });
+                    marker.setMap(map);
+                    markers.push(marker);
+                    marker.addListener("click", () => {
+                        markerwindow.open(map, marker);
+                    })
+                }
+            }
+        }
+
+        // switch display flag button listener
+        function switchFlag(mode) {
+            setMarkers(map, mode)
+        }
+
+        function my_marker_latLng(i) {
+            var location_lat = visited[i][0];
+            var location_lng = visited[i][1];
+            var str_json = JSON.stringify({lat: location_lat, lng: location_lng});
+            console.log(str_json);
+            document.getElementById("my_display_latLng_" + i).value = str_json;
+            document.getElementById("my_add_latLng_" + i).value = str_json;
+            return true;
+        }
+
+        function other_marker_latLng(i) {
+            var location_lat = other_visited[i][0];
+            var location_lng = other_visited[i][1];
+            var str_json = JSON.stringify({lat: location_lat, lng: location_lng});
+            console.log(str_json);
+            document.getElementById("other_display_latLng_" + i).value = str_json;
+            document.getElementById("other_add_latLng_" + i).value = str_json;
+            return true;
+        }
+
+        function record_latLng() {
+            var str_json = JSON.stringify(latLng);
+            document.getElementById("latLng").value = str_json;
+            return true;
+        }
+
+        function record_data() {
+            var str_json = JSON.stringify(latLng);
+            document.getElementById("latLng").value = str_json;
+            document.getElementById("location_name").value = locationName;
+            document.getElementById("placeID").value = placeId;
+            return true;
+        }
+
+
+        function isIconMouseEvent(e) {
+            return "placeId" in e;
+        }
+
+        class ClickEventHandler {
+            constructor(map, origin) {
+                this.origin = origin;
+                this.map = map;
+                this.infowindow = new google.maps.InfoWindow();
+                this.placesService = new google.maps.places.PlacesService(map);
+                this.infowindowContent = document.getElementById("infowindow-content");
+
+                // Listen for clicks on the map.
+                this.map.addListener("click", this.handleClick.bind(this));
+            }
+
+            handleClick(event) {
+                if (infoWindow) {
+                    infoWindow.close();
+                }
+                latLng = event.latLng;
+                // If the event has a placeId, use it.
+                if (isIconMouseEvent(event)) {
+                    this.infowindowContent.style.visibility = "visible";
+                    this.infowindow.setContent(this.infowindowContent);
+                    console.log("You clicked on place:" + event.placeId);
+                    // Calling e.stop() on the event prevents the default info window from
+                    // showing.
+                    // If you call stop here when there is no placeId you will prevent some
+                    // other map click event handlers from receiving the event.
+                    placeId = event.placeId;
+                    event.stop();
+                } else {
+                    this.infowindowContent.style.visibility = "hidden";
+                    console.log("You clicked on: " + event.latLng);
+                    this.infowindow.close();
+                    // Update latLng
+                    latLng = event.latLng.toJSON()
+                    // Create a new InfoWindow.
+                    this.infowindow = new google.maps.InfoWindow({
+                        position: event.latLng,
+                    });
+                    this.infowindow.setContent(
+                        '<form method="POST" onsubmit="return record_latLng()" action="' +
+                        "{% url 'log_editor' %}" + '">' +
+                        '{% csrf_token %}' +
+                        '<input type="hidden" name="latLng" id="latLng">' +
+                        '<button class="button-style1" type="submit">Add log</button>' +
+                        '</form>'
+                    );
+                    this.infowindow.open(map);
+                }
+                if (event.placeId) {
+                    this.getPlaceInformation(event.placeId);
+                }
+
+            }
+
+            getPlaceInformation(placeId) {
+                const me = this;
+                this.placesService.getDetails({
+                    placeId: placeId
+                }, (place, status) => {
+                    if (
+                        status === "OK" &&
+                        place &&
+                        place.geometry &&
+                        place.geometry.location
+                    ) {
+                        me.infowindow.close();
+                        me.infowindow.setPosition(place.geometry.location);
+                        me.infowindowContent.children["place-icon"].src = place.icon;
+                        me.infowindowContent.children["place-name"].textContent = place.name;
+                        me.infowindowContent.children["place-address"].textContent =
+                            place.formatted_address;
+                        me.infowindow.open(me.map);
+                        locationName = place.name;
+                    }
+                });
+            }
+        }
+    </script>
+
+    <body>
+    <div style="padding: 0.25%;"></div>
+    <div id="floating-panel">
+    </div>
+    <div style="display: none">
+        <input id="pac-input" class="controls" type="text" placeholder="Enter a location"/>
+    </div>
+
+    <div id="padding" style="padding-top: 10pt">
+        <button class="button-style1" type="submit" onclick="switchFlag(false)">My
+            footprint only
+        </button>
+        <button class="button-style1" type="submit" onclick="switchFlag(true)">Show
+            all footprint
+        </button>
+    </div>
+    <div id="map">
+    </div>
+    <div id="infowindow-content" style="visibility: hidden;">
+        <img id="place-icon" src="" height="16" width="16"/>
+        <span id="place-name" class="title"></span>
+        <span id="place-address"></span>
+        <form method="POST" onsubmit="return record_data()" action="{% url 'log_editor' %}">
+            {% csrf_token %}
+            <input type="hidden" name="location_name" id="location_name">
+            <input type="hidden" name="placeID" id="placeID">
+            <input type="hidden" name="latLng" id="latLng">
+            <button class="button-style1" type="submit">Add log</button>
+        </form>
+    </div>
+
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAzuMuqCtP0j8Yd7hJ6CG5jdei-Y4Pdlw&callback=initMap&libraries=places&v=weekly"
+            async></script>
+    </body>
+{% endblock %}

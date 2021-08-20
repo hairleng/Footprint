@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+
+<head>
+    <title>Travel Stream</title>
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
+    <link href='/static/travel.css' rel='stylesheet'>
+
+</head>
+
+<body oncontextmenu='return false' class='snippet-body'>
+    <input type="hidden" id="each_log" value={{log_id}}>
+    <div class="log_center">
+        <div class="h-screen px-2">
+            <div class="max-w-md mx-auto bg-white shadow-lg rounded-md overflow-hidden md:max-w-md">
+                <div class="md:flex">
+                    <div class="w-full">
+                        <div class="flex justify-between items-center p-3">
+
+                            <ul id="log-list">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+<script>
+    // Call getList() as soon as page is finished loading to display the to do list
+    log_id = document.getElementById("each_log").value;
+    var get_profile_link = "{% url 'get_profile' 999 %}"
+    var get_profile_photo_link = "{% url 'get_photo' 999 %}"
+    var get_log_cover_link = "{% url 'get_picture' 999 %}"
+    console.log(log_id)
+    oneLog(log_id);
+    // ... also call getList every 5 seconds hereafter to update the list
+    //window.setInterval(oneLog, 5000);
+</script>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "account/base.html" %}
+<div>
+    {% load i18n %} {% load account socialaccount %}{% block head_title %}{% trans "Sign In" %}{% endblock %} {% block content %}
+</div>
+
+<div class="w3-top">
+    <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-l2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+        <a href="/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Footprint</a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
+        <div class="w3-dropdown-hover w3-hide-small">
+
+            <a href="#" class="w3-button w3-padding-large" title="Notifications"><i
+                class="fa fa-bell"></i><span
+                class="w3-badge w3-right w3-small w3-green"></span></a>
+            <div id="notification_bar" class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
+                {% for notification in request.user.notifications.unread %}
+                <a href="#" class="w3-bar-item w3-button">
+                    <br> {{ notification.timesince }} ago</a> {% endfor %}
+            </div>
+        </div>
+        <a href="{% url 'account_signup' %}" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" id="id_register_link" title="Register">
+            Register
+        </a>
+    </div>
+</div>
+
+
+
+<div class="mx-auto w3-center" style="position: absolute; margin-top: 300px; width: 20%; margin-left: 0%;">
+    <h1>{% trans "Sign In!" %}</h1>
+
+    {% get_providers as socialaccount_providers %} {% if socialaccount_providers %}
+    <p>{% blocktrans with site.name as site_name %}Please sign in with one of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a> for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+
+    <div class="socialaccount_ballot">
+
+        <ul class="socialaccount_providers">
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+        </ul>
+
+        <div class="login-or">{% trans 'or' %}</div>
+
+    </div>
+    <div>
+        <strong>Menu:</strong>
+        <ul>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+            <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+            {% else %}
+            <li><a href="{% url 'account_login' %}">Sign In</a></li>
+            <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <!-- 
+    {% include "socialaccount/snippets/login_extra.html" %} {% else %}
+    <p>{% blocktrans %}If you have not created an account yet, then please
+        <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+    {% endif %} -->
+
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %} {{ form.as_p }} {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" /> {% endif %}
+        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+        <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+    </form>
+
+
+</div>
+
+
+
+
+{% endblock %}

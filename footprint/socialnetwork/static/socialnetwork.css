@@ -1,0 +1,176 @@
+.center {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    text-align: center;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.coverimg {
+    object-fit: cover;
+    width: 230px;
+    height: 230px;
+    overflow: hidden;
+}
+
+.avatar-img {
+    width: 40px;
+    height: 40px;
+    /* overflow: hidden; */
+    object-fit: cover;
+}
+
+.img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.text-center {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    left: 50%;
+    top: 50%;
+}
+
+.span {
+    display: inline-block;
+}
+
+
+/* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+
+#map {
+    height: 100%;
+}
+
+
+/* Optional: Makes the sample page fill the window. */
+
+html,
+body {
+    height: 100%;
+    padding-top: 1%;
+}
+
+.custom-map-control-button {
+    appearance: auto;
+    background-color: #fff;
+    border: 0;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    margin: 10px;
+    padding: 0 0.5em;
+    height: 40px;
+    font: 400 18px Roboto, Arial, sans-serif;
+    overflow: hidden;
+}
+
+#floating-panel {
+    position: absolute;
+    top: 50px;
+    left: 25%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 1px;
+    text-align: center;
+    font-family: "Roboto", "sans-serif";
+    line-height: 30px;
+    padding-left: 5px;
+}
+
+.custom-map-control-button:hover {
+    background: #ebebeb;
+}
+
+.controls {
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    height: 50px;
+    margin-left: 17px;
+    margin-top: 10px;
+    outline: none;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 800px;
+}
+
+.container {
+    width: 100%;
+}
+
+.align-left {
+    float: left;
+    margin-right: 2em;
+}
+
+.align-right {
+    float: right;
+}
+
+#id_logged_in_user_name {
+    text-align: right;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Raleway:500");
+.button-style1 {
+    -webkit-appearance: none;
+    background: -webkit-gradient(to right, #a2ccb6 0%, #fceeb5 50%, #ee786e 100%);
+    background: linear-gradient(to right, #a2ccb6 0%, #fceeb5 50%, #ee786e 100%);
+    background-size: 500%;
+    border: none;
+    border-radius: 5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    color: #fff;
+    cursor: pointer;
+    font: 1em Raleway, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 3rem;
+    letter-spacing: 0.05em;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 10rem;
+}
+
+.button-style1:hover {
+    animation-name: gradient;
+    -webkit-animation-name: gradient;
+    animation-duration: 2s;
+    -webkit-animation-duration: s;
+    animation-iteration-count: 1;
+    -webkit-animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100%;
+    }
+}
+
+#markerLayer img {
+    border: 2px solid white !important;
+    width: 85% !important;
+    height: 90% !important;
+    border-radius: 15px;
+}

@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block content %}
+
+    <head>
+        <title>Travel Stream</title>
+        <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+              rel='stylesheet'>
+        <link href='/static/travel.css' rel='stylesheet'>
+        <!-- {#        <link href='/static/blog_style.css' rel='stylesheet'>#} -->
+    </head>
+
+    <body oncontextmenu='return false' class='snippet-body'>
+    <div class="container">
+        <div class="card mb-3">
+            <div class="card-header">
+                <input id="myInput" class='search_input' type="text" placeholder=" 🔍 Search..">
+
+            </div>
+            <div class="card-body">
+                <div class="row_filter">
+                    <h6><span class="fa fa-calendar mr-3"></span>Date</h6>
+                    {{ message }}
+                    <div class="first_cal">From <input type="date" id="start_date" name="start_date"
+                                                       value={{ date1 }} required> &nbsp To
+                        <input type="date" id="end_date" name="end_date" value={{ date2 }} required>
+                        <button class="btn" type="submit" id="filter_submit"
+                                onclick="filterDate(document.getElementById('start_date').value,document.getElementById('end_date').value);switchFilter(true);">
+                            Filter
+                        </button>
+                        <button class="btn" type="submit" id="reset" onclick="switchFilter(false);">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="log_center">
+            <div class="h-screen px-2">
+                <div class="max-w-md mx-auto bg-white shadow-lg rounded-md overflow-hidden md:max-w-md">
+                    <div class="md:flex">
+                        <div class="w-full">
+                            <div class="flex justify-between items-center p-3">
+                                <ul id="log-list">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </body>
+
+    <script>
+        // Call getList() as soon as page is finished loading to display the to do list
+        $(document).ready(function () {
+            $(".comment-container").click(function () {
+                $(this).css("overflow", "visible");
+            });
+        });
+        var filter = false;
+        var get_profile_link = "{% url 'get_profile' 999 %}"
+        var get_profile_photo_link = "{% url 'get_photo' 999 %}"
+        var get_log_cover_link = "{% url 'get_picture' 999 %}"
+
+        // console.log(filter);
+
+        function switchFilter(switch1) {
+            filter = switch1;
+            timedGetLogs();
+            if (!switch1) {
+                document.getElementById("start_date").value = "";
+                document.getElementById("end_date").value = "";
+            }
+            // console.log(filter);
+        }
+
+        function timedGetLogs() {
+            // document.getElementById("filter_submit").addEventListener("click", switchFilter(true));
+            console.log(filter);
+            if (filter) {
+                document.getElementById("log-list").innerHTML = "";
+                filterDate(document.getElementById('start_date').value, document.getElementById('end_date').value);
+                // getFilteredLogs();
+            } else {
+                getLogs();
+            }
+        }
+
+        window.onload = timedGetLogs;
+        window.setInterval(timedGetLogs, 5000000);
+
+
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#log-list li").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

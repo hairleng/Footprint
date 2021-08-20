@@ -1,0 +1,69 @@
+{% extends "base.html" %} {% block content %}
+<title>Register Page</title>
+<div class="w3-top">
+    <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+        <a href="/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Footprint</a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
+        <a href="login" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" id="id_login_link" title="Login">
+           Login
+        </a>
+    </div>
+</div>
+<!-- Page Container -->
+<div class="container" style="width: 25%;">
+    <div class="row">
+        <div class="col">
+            <div class="w3-padding-top-64">
+                <div>
+                    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+                    <link rel="stylesheet" href="../static/login.css">
+
+                    <body>
+                        <form method="post" action="{% url 'account_signup' %}">
+                            <h1>Register</h1>
+                            <div class="formcontainer">
+                                <hr/>
+                                <div class="container w3">
+
+                                    <label for="uname"><strong>Username</strong></label> {{form.username}}
+                                    <label for="psw"><strong>Password</strong></label> {{form.password1}}
+                                    <label for="psw"><strong>Confirm Password</strong></label> {{form.password2}}
+                                    <label for="text"><strong>Email</strong></label> {{form.email}}
+                                    <label for="text"><strong>First Name</strong></label> {{form.first_name}}
+                                    <label for="text"><strong>Last Name</strong></label> {{form.last_name}}
+                                </div>
+                                <button type="submit">Register</button> {% csrf_token %}
+                        </form>
+                    </body>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div>
+                <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+                <link rel="stylesheet" href="../static/Oauth.css">
+                <div class="main-block">
+                    <div class="block-item left">
+                        <h1>Sign up with:</h1>
+                        <p><small>W3docs provides free learning materials for programming languages like HTML, CSS, Java Script, PHP etc.</small>
+                        </p>
+                    </div>
+                    <div class="block-item right">
+                        <button class="btn facebook" data-provider="facebook"><i class="fab fa-facebook-f"></i><span>Facebook</span></button>
+                        <button class="btn twitter" data-provider="twitter"><i class="fab fa-twitter"></i><span>Twitter</span></button>
+                        <button class="btn google" data-provider="google"><i class="fab fa-google"></i><span>Google</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br> {% endblock %}

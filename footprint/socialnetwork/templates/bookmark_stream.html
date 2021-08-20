@@ -1,0 +1,241 @@
+{% extends "base.html" %} {% block content %}
+
+<head>
+    <title>Bookmark Stream</title>
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
+    <link href='/static/travel.css' rel='stylesheet'>
+    <style>
+        button:hover {
+            transform: scale(2);
+        }
+        
+        button {
+            border: 0;
+            background: none;
+            margin: 2px;
+            border-radius: 24px;
+            transition: 0.25s;
+        }
+        
+        .category {
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #3a55b6
+        }
+        
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px
+        }
+        
+        .items-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .img_center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+        
+        a,
+        .btn {
+            transition: all 0.3s ease-out 0s
+        }
+        
+        a {
+            color: #333;
+            text-decoration: none !important
+        }
+        
+        h4 {
+            margin-bottom: 0px !important
+        }
+        
+        .mb-10 {
+            margin-bottom: 10px
+        }
+        
+        .htcatthumb a img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        p+img,
+        img:last-child {
+            margin-bottom: 0
+        }
+        
+        .frhoverinfo {
+            position: absolute;
+            right: 20px;
+            top: 20px
+        }
+        
+        .productaction {
+            display: flex;
+            justify-content: center;
+            flex-flow: row
+        }
+        
+        .ml-text {
+            margin-left: -44px
+        }
+        
+        ul,
+        ol {
+            list-style: none
+        }
+        
+        .productaction li:nth-child(1) {
+            opacity: 0;
+            transition: opacity 300ms linear 0s
+        }
+        
+        .productaction li:nth-child(2) {
+            opacity: 0;
+            transition: opacity 300ms linear 0s
+        }
+        
+        .productaction li:nth-child(3) {
+            opacity: 0;
+            transition: opacity 300ms linear 0s
+        }
+        
+        .productaction li {
+            margin: 0;
+            margin-bottom: 2px
+        }
+        
+        .productaction li a {
+            background: #fefefe none repeat scroll 0 0;
+            display: inline-block;
+            height: 50px;
+            line-height: 60px;
+            text-align: center;
+            transition: all 0.4s ease 0s;
+            width: 50px
+        }
+        
+        .productaction li a i {
+            color: #e27e5f;
+            font-size: 18px;
+            transition: all 0.4s ease 0s
+        }
+        
+        .category:hover .productaction li:nth-child(1) {
+            -webkit-animation: 300ms ease-in-out 0s normal none 1 running fadeInRight;
+            animation: 300ms ease-in-out 0s normal none 1 running fadeInRight;
+            opacity: 1;
+            transition: opacity 300ms linear 0s
+        }
+        
+        .category:hover .productaction li:nth-child(2) {
+            -webkit-animation: 500ms ease-in-out 0s normal none 1 running fadeInRight;
+            animation: 500ms ease-in-out 0s normal none 1 running fadeInRight;
+            opacity: 1;
+            transition: opacity 500ms linear 0s
+        }
+        
+        .category:hover .productaction li:nth-child(3) {
+            -webkit-animation: 500ms ease-in-out 0s normal none 1 running fadeInRight;
+            animation: 500ms ease-in-out 0s normal none 1 running fadeInRight;
+            opacity: 1;
+            transition: opacity 500ms linear 0s
+        }
+        
+        .category:hover .frproductinner.innerposition {
+            bottom: 0;
+            opacity: 1
+        }
+        
+        .frproductinner.innerposition {
+            background: #fff none repeat scroll 0 0;
+            bottom: -15px;
+            left: 0;
+            opacity: 0;
+            padding: 5px 5px;
+            position: absolute;
+            text-align: left;
+            transition: all 0.5s ease 0s;
+            width: 100%
+        }
+        
+        .frproductinner h4 a {
+            color: #3a55b6;
+            font-family: Old Standard TT;
+            font-size: 17px;
+            font-weight: 600;
+            text-transform: capitalize;
+            transition: all 0.3s ease 0s
+        }
+        
+        .innerposition .frproprize {
+            float: left;
+            justify-content: flex-start
+        }
+        
+        .frproprize {
+            display: flex;
+            justify-content: center;
+            margin-top: 6px
+        }
+        
+        .frproprize li {
+            color: #313131;
+            font-family: Poppins;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 5px
+        }
+        
+        .innerposition .frproprize {
+            margin-top: 0
+        }
+        
+        .innerposition .rating {
+            display: flex;
+            float: right
+        }
+        
+        .rating li i {
+            color: #01091f
+        }
+    </style>
+</head>
+
+<body oncontextmenu='return false' class='snippet-body'>
+
+    <div class="log_center">
+        <div class="h-screen px-2">
+            <div class="max-w-md mx-auto bg-white shadow-lg rounded-md overflow-hidden md:max-w-md">
+                <div class="md:flex">
+                    <div class="w-full">
+                        <div class="flex justify-between items-center p-3">
+                            <ul id="log-list">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+
+<script>
+    // Call getList() as soon as page is finished loading to display the to do list
+    var get_profile_link = "{% url 'get_profile' 999 %}"
+    var get_profile_photo_link = "{% url 'get_photo' 999 %}"
+    var get_log_cover_link = "{% url 'get_picture' 999 %}"
+    window.onload = getBookmarkLogs();
+    // ... also call getList every 5 seconds hereafter to update the list
+    window.setInterval(getBookmarkLogs, 5000);
+</script>
+
+{% endblock %}

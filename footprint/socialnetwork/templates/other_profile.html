@@ -1,0 +1,91 @@
+ {% extends "base.html" %} {% block content %}
+
+<div class="row py-5 px-4">
+    <div class="col-md-5 mx-auto">
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 cover">
+                <div class="media align-items-end profile-head">
+                    <div class="profile mr-3"><img id="id_user_picture" src="{% url 'get_photo' p.id %}" width="130px" height="130px" alt="Avatar" class="rounded mb-2 img-thumbnail" style="object-fit: cover;background-size: cover;background-clip: content-box;">
+                        <br> {% if following_status %}
+                        <form method="POST" action="{% url 'unfollow' p.id %}">
+                            <button type="submit" class="btn btn-outline-dark btn-sm btn-block" id="id_unfollow">Unfollow</button> {% csrf_token %}
+                        </form>
+                        {% else %}
+                        <form method="POST" action="{% url 'follow' p.id %}">
+                            <button type="submit" class="btn btn-outline-dark btn-sm btn-block" id="id_follow">Follow</button> {% csrf_token %}
+                        </form>
+                        {% endif %}
+                    </div>
+                    <div class="media-body mb-5 text-black">
+                        <h4 class="mt-0 mb-0">{{p.user.first_name}} {{p.user.last_name}}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light p-4 d-flex justify-content-end text-center">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">{{num_logs}}</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Logs</small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">{{num_followers}}</h5><small class="text-muted"> <i class="fas fa-user mr-1"></i>Followers</small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">{{num_followings}}</h5><small class="text-muted"> <i class="fas fa-user mr-1"></i>Following</small>
+                    </li>
+                </ul>
+            </div>
+            <div class="px-4 py-3">
+                <h5 class="mb-0">About</h5>
+                <div class="p-4 rounded shadow-sm bg-light">
+                    <p class="font-italic mb-0" id="id_user_bio">{{p.bio}}</p>
+
+                </div>
+            </div>
+            <div class="py-4 px-4 profile-log-container">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="mb-0">My Logs</h5><a href="{%url 'show_all_user_stream' p.user.id %}" class="btn btn-link text-muted">Show all</a>
+                </div>
+                <div class="row">
+                    <ul>
+                        {% for log in logs_created_by_user %}
+                        <li>
+                            <a href="{%url 'one_log' log.id %}" id="id_bookmarked_log_link_{{log.id}}">
+                                <img src="{%url 'get_picture' log.id %}" alt="This log doesn't have a cover" width="80" height="80"> {{log.log_title}}
+                            </a>
+                        </li>
+                        </li> {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="myFunction('Demo1')" class="btn btn-outline-dark btn-sm btn-block"><i class="fa fa-user fa-fw w3-margin-right"></i> Followings</button>
+        <div id="Demo1" class="w3-hide w3-container">
+            <ul>
+                {% for following_profile in following %}
+                <li>
+                    <a href="{%url 'get_profile'   following_profile.user.username %}" id="id_profile_link_{{following_profile.user.username}}">
+                        <img src="{%url 'get_photo' following_profile.id %}" alt='This user does not have a cover picture' width=50 height=50> {{following_profile.user.first_name}} {{following_profile.user.last_name}}</a>
+                </li>
+                </li> {% endfor %}
+
+            </ul>
+        </div>
+        <button onclick="myFunction('Demo2')" class="btn btn-outline-dark btn-sm btn-block"><i class="fa fa-users fa-fw w3-margin-right"></i> Followers</button>
+        <div id="Demo2" class="w3-hide w3-container">
+            <ul>
+                {% for follower_profile in followers %}
+                <li>
+                    <a href="{%url 'get_profile'  follower_profile.user.username %}" id="id_profile_link_{{follower_profile.user.username}}">
+                        <img src="{%url 'get_photo' follower_profile.id %}" alt='This user does not have a cover picture' width=50 height=50> {{follower_profile.user.first_name}} {{follower_profile.user.last_name}}</a>
+                </li>
+                </li> {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<br> {% endblock %}

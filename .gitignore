@@ -1,0 +1,11 @@
+
+footprint/.DS_Store
+*.iml
+footprint/media/.DS_Store
+*.pyc
+footprint/webapps/.DS_Store
+footprint/socialnetwork/templates/.DS_Store
+.DS_Store
+*.xml
+*.jpeg
+*.png

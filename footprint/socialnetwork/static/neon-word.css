@@ -1,0 +1,68 @@
+@import 'https://fonts.googleapis.com/css?family=Permanent+Marker';
+#no-notification {
+  font: 10vw/1 Permanent Marker;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  text-align: center;
+  color: snow;
+}
+
+span {
+  -webkit-animation: glow 2s ease-in-out both infinite;
+          animation: glow 2s ease-in-out both infinite;
+}
+span:nth-child(1) {
+  -webkit-animation-delay: -0.2857142857s;
+          animation-delay: -0.2857142857s;
+}
+span:nth-child(2) {
+  -webkit-animation-delay: -0.5714285714s;
+          animation-delay: -0.5714285714s;
+}
+span:nth-child(3) {
+  -webkit-animation-delay: -0.8571428571s;
+          animation-delay: -0.8571428571s;
+}
+span:nth-child(4) {
+  -webkit-animation-delay: -1.1428571429s;
+          animation-delay: -1.1428571429s;
+}
+span:nth-child(5) {
+  -webkit-animation-delay: -1.4285714286s;
+          animation-delay: -1.4285714286s;
+}
+span:nth-child(6) {
+  -webkit-animation-delay: -1.7142857143s;
+          animation-delay: -1.7142857143s;
+}
+span:nth-child(7) {
+  -webkit-animation-delay: -2s;
+          animation-delay: -2s;
+}
+
+@-webkit-keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 8.3333333333px snow, 0 -25px 50px tomato, -25px 25px 50px yellow, 25px 25px 50px tomato;
+  }
+  33% {
+    text-shadow: 0 0 8.3333333333px snow, 0 -25px 50px cyan, -25px 25px 50px tomato, 25px 25px 50px cyan;
+  }
+  66% {
+    text-shadow: 0 0 8.3333333333px snow, 0 -25px 50px yellow, -25px 25px 50px cyan, 25px 25px 50px yellow;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 8.3333333333px snow, 0 -25px 50px tomato, -25px 25px 50px yellow, 25px 25px 50px tomato;
+  }
+  33% {
+    text-shadow: 0 0 8.3333333333px snow, 0 -25px 50px cyan, -25px 25px 50px tomato, 25px 25px 50px cyan;
+  }
+  66% {
+    text-shadow: 0 0 8.3333333333px snow, 0 -25px 50px yellow, -25px 25px 50px cyan, 25px 25px 50px yellow;
+  }
+}
+

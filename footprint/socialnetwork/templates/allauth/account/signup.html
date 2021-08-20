@@ -1,0 +1,44 @@
+{% extends "account/base.html" %} {% load i18n %} {% block head_title %}{% trans "Signup" %}{% endblock %} {% block content %}
+
+<div class="w3-top">
+    <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+        <a href="/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Footprint</a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
+        <div class="w3-dropdown-hover w3-hide-small">
+
+            <a href="#" class="w3-button w3-padding-large" title="Notifications"><i
+                class="fa fa-bell"></i><span
+                class="w3-badge w3-right w3-small w3-green"></span></a>
+            <div id="notification_bar" class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
+                {% for notification in request.user.notifications.unread %}
+                <a href="#" class="w3-bar-item w3-button">
+                    <br> {{ notification.timesince }} ago</a> {% endfor %}
+            </div>
+        </div>
+        <a href="{% url 'account_login' %}" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" id="id_register_link" title="Login">
+            Login
+        </a>
+    </div>
+</div>
+
+<div class="mx-auto w3-center" style="position: absolute; margin-top: 300px; width: 20%; margin-left: 0%;">
+
+    <h1>{% trans "Sign Up" %}</h1>
+
+    <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %} {{ form.as_p }} {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" /> {% endif %}
+        <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+    </form>
+
+
+
+</div>
+
+
+{% endblock %}

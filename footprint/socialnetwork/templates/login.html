@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+<title>Login Page</title>
+{% block content %}
+<div class="w3-top">
+    <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+        <a href="/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>KesMeow's Social Network</a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
+
+        <a href="register" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" id="id_register_link" title="Register">
+            Register
+        </a>
+    </div>
+</div>
+<!-- Page Container -->
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="w3-padding-top-64">
+                <div>
+                    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+                    <link rel="stylesheet" href="../static/login.css">
+
+                    <body>
+                        <form method="post" action="{% url 'account_login' %}">
+                            <h1>Login</h1>
+                            <div class="formcontainer">
+                                <hr/>
+                                <div class="container">
+                                    {{form}}
+                                    <!-- <label for="uname"><strong>Username</strong></label>
+                                    <input type="text" placeholder="Enter Username" name="uname" required>
+                                    <label for="psw"><strong>Password</strong></label>
+                                    <input type="password" placeholder="Enter Password" name="psw" required> -->
+                                </div>
+                                <button type="submit">Login</button> {% csrf_token %}
+                                <div class="container" style="background-color: #eee">
+                                    <label style="padding-left: 15px">
+                                <input type="checkbox"  checked="checked" name="remember"> Remember me
+                                    </label>
+                                    <span class="psw"><a href="#"> Forgot password?</a></span>
+                                </div>
+                        </form>
+                    </body>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<br> {% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block content %}
+    <link href="/static/card1.css" rel="stylesheet" type="text/css">
+    <link href="/static/neon-word.css" rel="stylesheet" type="text/css">
+    {% load notifications_tags %}
+    {% load static %}
+    <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
+    {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+    <br><br>
+    {% for notification in request.user.notifications.unread %}
+        <ul class="display-list">
+            <div class="blog-card">
+                <div class="meta">
+                    {% if notification.description == "Comment" %}
+                        <div class="photo"
+                             style="background-image: url(https://techniqe.com/wp-content/uploads/2019/08/comment-moderation-guide-wordress.png)"></div>
+                    {% endif %}
+                    {% if notification.description == "Like" %}
+                        <div class="photo"
+                             style="background-image: url(https://img.icons8.com/bubbles/2x/facebook-like.png)"></div>
+                    {% endif %}
+                    <ul class="details">
+                        <li class="author"><a href="#">{{ notification.target.user.username }}</a></li>
+                        <li class="date">{{ notification.target.creation_time }}</li>
+                    </ul>
+                </div>
+                <div class="description">
+                    <h1>A New {{ notification.description }}</h1>
+                    <h2>{{ notification.timesince }} ago</h2>
+                    <p> {{ notification.verb | safe }}
+                        <br></p>
+                    <p class="read-more">
+                    <form method="post" action="{% url 'mark_as_read' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="notification_id" value="{{ notification.id }}">
+                        <input type="hidden" name="log_id" value="{{ notification.target.id }}">
+                        <button class="button-style1" type="submit">View detail</button>
+                    </form>
+                    </p>
+                </div>
+            </div>
+        </ul>
+
+
+
+    {% empty %}
+        <div class="box"><span>No Notifications For Now.</span></div>
+        <style>
+        .box{
+            font-size:36px
+        }
+        </style>
+    {% endfor %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
