@@ -1,6 +1,3 @@
-# s21_team_21
-Repository for s21_team_21
-
 ## Demo website
 
 https://cmu-footprint.com
