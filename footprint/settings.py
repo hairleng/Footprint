@@ -21,8 +21,6 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 31457280
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'isftird=&_tc8rp@4j+51a74x6m@-v9!^_$zpwy-l#b+n-$9+r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -139,8 +137,6 @@ SOCIALACCOUNT_PROVIDERS = \
       'VERSION': 'v2.4'}}
 
 
-SOCIAL_AUTH_FACEBOOK_KEY = '271877081339319!'  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '431e752e0b6c9ebd362704c3c14564e1!'  # app key
 
 # ACCOUNT_EMAIL_REQUIRED=True
 # ACCOUNT_USERNAME_REQURIED=True
@@ -167,14 +163,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
-
-EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'footprint.cmu@gmail.com'
-EMAIL_HOST_PASSWORD = 'jdfbahfjmqrgsego'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'socialnetwork.forms.SignupForm'
 
