@@ -1,4 +1,4 @@
-## Demo website
+## Demo website (server has been closed)
 
 https://cmu-footprint.com
 
